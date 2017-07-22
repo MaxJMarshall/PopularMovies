@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="scroll_text">This should disappear</string>
+    <string name="error_message_text">Oops. Something went wrong.</string>
+</resources>
