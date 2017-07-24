@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieAdapter mMovieAdapter;
 
-    public final String apiKey = "9dee2214e44919b386ad7e2acc1ad305";
+    public final String apiKey = "********************************";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
