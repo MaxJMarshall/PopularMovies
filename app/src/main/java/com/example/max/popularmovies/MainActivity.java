@@ -14,6 +14,8 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler{
 
     private RecyclerView mRecyclerView;
@@ -22,7 +24,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieAdapter mMovieAdapter;
 
-    public final String apiKey = "9dee2214e44919b386ad7e2acc1ad305";
+    //                            ********************************
+    public final String API_KEY = getString(R.string.api_key);
+    private final String URL_STRING = getString(R.string.tmbd_api_url) + API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +84,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         @Override
         protected String[] doInBackground(String... strings) {
+            //String[] parsedMovieIds = null;
+            ArrayList<JSONObject> movies = new ArrayList<JSONObject>();
             String[] parsedMovieIds = null;
+            String jsonString;
 
+            final String MOVIE_RESULTS = "results";
             final String MOVIE_ID = "id";
             final String MOVIE_IMAGE = "poster_path";
             //final String MOVIE_TITLE = "original_title";
@@ -89,14 +97,23 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             //final String MOVIE_VOTE_AVERAGE = "vote_average";
             //final String MOVIE_PLOT_SYNOPSIS = "overview";
 
+
             try{
-                JSONObject movieJson = new JSONObject("https://api.themoviedb.org/3/movie/popular?api_key=" + apiKey);
-                JSONArray moviesArray = movieJson.getJSONArray("results");
+                /*InputStream is = new URL(URL_STRING).openStream();
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+                StringBuilder sb = new StringBuilder();
+                int cp;
+                while((cp = rd.read()) != -1){
+                    sb.append((char)cp);
+                }
+                jsonString = sb.toString();
+               */
+                JSONObject movieJson = new JSONObject(URL_STRING);
+                JSONArray moviesArray = movieJson.getJSONArray(MOVIE_RESULTS);
                 parsedMovieIds = new String[moviesArray.length()];
-                System.out.println(moviesArray.length());
                 if(moviesArray.length()>0){
                     for(int i = 0; i<moviesArray.length(); i++){
-                     //String title;
+                        //String title;
                         //String release_date;
                         //String plot_synopsis;
                         String image_path;
@@ -111,9 +128,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                         image_path = movie.getString(MOVIE_IMAGE);
                         id = movie.getInt(MOVIE_ID);
 
-                        /*parsedMovieIds[i] = "Title: " + title + "/n" +
-                                "Release Date: " + release_date + "/n" +
-                                "Vote Average: " + vote_average + "n/" +
+                        /*parsedMovieIds[i] = "Title: " + title + "\n" +
+                                "Release Date: " + release_date + "\n" +
+                                "Vote Average: " + vote_average + "\n" +
                                 "Plot Synopsis: " + plot_synopsis;*/
                         parsedMovieIds[i] = image_path + " * " + id;
                     }
