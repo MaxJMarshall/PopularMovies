@@ -28,6 +28,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieAdapter mMovieAdapter;
 
+<<<<<<< HEAD
+=======
+    public final String apiKey = "********************************";
+
+>>>>>>> 8bdde59199b675da5132de3a987d36170f8ce33a
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
