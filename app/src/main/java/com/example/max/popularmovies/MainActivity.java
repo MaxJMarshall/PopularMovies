@@ -11,9 +11,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.max.popularmovies.utilities.Movie;
+import com.example.max.popularmovies.utilities.NetworkUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler{
@@ -23,10 +27,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private ProgressBar mProgressBar;
 
     private MovieAdapter mMovieAdapter;
-
-    //                            ********************************
-    public final String API_KEY = getString(R.string.api_key);
-    private final String URL_STRING = getString(R.string.tmbd_api_url) + API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,18 +84,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         @Override
         protected String[] doInBackground(String... strings) {
-            //String[] parsedMovieIds = null;
-            ArrayList<JSONObject> movies = new ArrayList<JSONObject>();
-            String[] parsedMovieIds = null;
+            String[] movieTitles = null;
+            ArrayList<Movie> movies = new ArrayList<>();
             String jsonString;
 
-            final String MOVIE_RESULTS = "results";
-            final String MOVIE_ID = "id";
-            final String MOVIE_IMAGE = "poster_path";
-            //final String MOVIE_TITLE = "original_title";
-            //final String MOVIE_RELEASE_DATE = "release_date";
-            //final String MOVIE_VOTE_AVERAGE = "vote_average";
-            //final String MOVIE_PLOT_SYNOPSIS = "overview";
+            final String MOVIE_RESULTS       = "results";
+            final String MOVIE_ID            = "id";
+            final String MOVIE_IMAGE         = "poster_path";
+          //final String MOVIE_TITLE         = "original_title";
+          //final String MOVIE_RELEASE_DATE  = "release_date";
+          //final String MOVIE_VOTE_AVERAGE  = "vote_average";
+          //final String MOVIE_PLOT_SYNOPSIS = "overview";
 
 
             try{
@@ -108,42 +107,43 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 }
                 jsonString = sb.toString();
                */
-                JSONObject movieJson = new JSONObject(URL_STRING);
+                URL url = NetworkUtils.buildDefaultMovieUrl();
+                JSONObject movieJson = new JSONObject(url.toString());
                 JSONArray moviesArray = movieJson.getJSONArray(MOVIE_RESULTS);
-                parsedMovieIds = new String[moviesArray.length()];
+                movieTitles = new String[moviesArray.length()];
                 if(moviesArray.length()>0){
                     for(int i = 0; i<moviesArray.length(); i++){
                         //String title;
                         //String release_date;
                         //String plot_synopsis;
-                        String image_path;
+                        //String image_path;
                         //double vote_average;
-                        int id;
+                        //int id;
 
                         JSONObject movie = moviesArray.getJSONObject(i);
                         //title = movie.getString(MOVIE_TITLE);
                         //release_date = movie.getString(MOVIE_RELEASE_DATE);
                         //plot_synopsis = movie.getString(MOVIE_PLOT_SYNOPSIS);
                         //vote_average = movie.getDouble(MOVIE_VOTE_AVERAGE);
-                        image_path = movie.getString(MOVIE_IMAGE);
-                        id = movie.getInt(MOVIE_ID);
+                        //image_path = movie.getString(MOVIE_IMAGE);
+                        //id = movie.getInt(MOVIE_ID);
+                        movies.add(new Movie(movie));
 
                         /*parsedMovieIds[i] = "Title: " + title + "\n" +
                                 "Release Date: " + release_date + "\n" +
                                 "Vote Average: " + vote_average + "\n" +
                                 "Plot Synopsis: " + plot_synopsis;*/
-                        parsedMovieIds[i] = image_path + " * " + id;
+                        movieTitles[i] = movies.get(i).getTitle();
                     }
                 }
             }
             catch (Exception e){
                 e.printStackTrace();
+                showErrorMessage();
+                return null;
             }
 
-            if(parsedMovieIds == null)
-                showErrorMessage();
-
-            return parsedMovieIds;
+            return movieTitles;
         }
 
         @Override
