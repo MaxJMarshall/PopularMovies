@@ -20,7 +20,7 @@ public class NetworkUtils {
 
     private static final String API_KEY =
             "********************************";
-          // ********************************
+          //"********************************"
 
     private static final String DEFAULT_MOVIE_URL =
             "https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY;

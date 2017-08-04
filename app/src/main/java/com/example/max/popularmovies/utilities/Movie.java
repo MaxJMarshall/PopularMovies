@@ -9,12 +9,12 @@ import java.net.URL;
  */
 
 public class Movie {
-    private static final String  MOVIE_TITLE_REF = "title";
+    private static final String  MOVIE_TITLE_REF = "original_title";
     private static final String  MOVIE_ID_REF = "id";
     private static final String  MOVIE_POPULARITY_REF = "popularity";
-    private static final String  MOVIE_POSTER_PATH_REF = "poster path";
+    private static final String  MOVIE_POSTER_PATH_REF = "poster_path";
     private static final String  MOVIE_OVERVIEW_REF = "overview";
-    private static final String  MOVIE_RELEASE_DATE_REF = "release date";
+    private static final String  MOVIE_RELEASE_DATE_REF = "release_date";
 
     private String title;
     private int id;
@@ -50,6 +50,18 @@ public class Movie {
 
     }
 
+    public Movie(){
+        title = "Fight Club";
+        id = 550;
+        popularity = 10.173646;
+        posterPath = "/adw6Lq9FiC9zjYEpOqfq03ituwp.jpg";
+        overview = "A ticking-time-bomb insomniac and a slippery soap salesman channel primal \n" +
+                "male aggression into a shocking new form of therapy. Their concept catches on, with \n" +
+                "underground \"fight clubs\" forming in every town, until an eccentric gets in the way and\n" +
+                "ignites an out-of-control spiral toward oblivion.";
+        releaseDate = "1999-10-15";
+    }
+
     private void setData(JSONObject jsonObject){
         try {
             title = jsonObject.getString(MOVIE_TITLE_REF);
@@ -68,6 +80,10 @@ public class Movie {
         return title;
     }
 
+    public int getId(){
+        return id;
+    }
+
     public double getPopularity(){
         return popularity;
     }
@@ -82,5 +98,36 @@ public class Movie {
 
     public String getReleaseDate(){
         return releaseDate;
+    }
+
+    public void setTitle(String title){
+        this.title = title;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public void setPopularity(double popularity){
+        this.popularity = popularity;
+    }
+
+    public void setPosterPath(String posterPath){
+        this.posterPath = posterPath;
+    }
+
+    public void setOverview(String overview){
+        this.overview = overview;
+    }
+
+    public void setReleaseDate(String releaseDate){
+        this.releaseDate = releaseDate;
+    }
+
+    public String toSting(){
+        return "Title: " + title + "\n" +
+                "Popularity: " + popularity + "\n" +
+                "Release Date: " + releaseDate + "\n" +
+                "Overview: " + overview;
     }
 }
