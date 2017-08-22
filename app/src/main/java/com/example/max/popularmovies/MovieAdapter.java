@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.max.popularmovies.utilities.Movie;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -15,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder>{
 
-    private String[] mMoviePosterPaths;
+    private Movie[] mMovies;
     private final MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler{
@@ -37,7 +38,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View v){
             int adapterPosition = getAdapterPosition();
-            String moviePosterPath = mMoviePosterPaths[adapterPosition];
+            String moviePosterPath = mMovies[adapterPosition].getPosterPath();
             mClickHandler.onClick(moviePosterPath);
         }
     }
@@ -55,22 +56,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
-        if(position<mMoviePosterPaths.length){
-            String moviePosterPath = mMoviePosterPaths[position].substring(0,mMoviePosterPaths[position].indexOf(" *"));
+        if(position<mMovies.length){
+            String moviePosterPath = mMovies[position].getPosterPath();
             Context context = holder.mMovieImageView.getContext();
             Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + moviePosterPath).into(holder.mMovieImageView);
-            //holder.mMovieImageView.setImageDrawable(Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + mMoviePosterPaths[position]));
+            //holder.mMovieImageView.setImageDrawable(Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + mMovies[position]));
         }
     }
 
     @Override
     public int getItemCount() {
-        if(mMoviePosterPaths == null) return 0;
-        return mMoviePosterPaths.length;
+        if(mMovies == null) return 0;
+        return mMovies.length;
     }
 
-    public void setMoviePoster(String posters[]){
-        mMoviePosterPaths = posters;
+    public void setMoviePoster(Movie posters[]){
+        mMovies = posters;
         notifyDataSetChanged();
     }
 }

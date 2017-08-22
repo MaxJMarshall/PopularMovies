@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessage.setVisibility(View.VISIBLE);
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, String[]>{
+    public class FetchMovieTask extends AsyncTask<String, Void, Movie[]>{
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -85,57 +85,23 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
 
         @Override
-        protected String[] doInBackground(String... strings) {
-            String[] movieTitles = null;
+        protected Movie[] doInBackground(String... strings) {
+            Movie[] movieList;
 
-            String jsonString;
-
-          final String MOVIE_RESULTS       = "results";
-          //final String MOVIE_ID            = "id";
-          //final String MOVIE_IMAGE         = "poster_path";
-          //final String MOVIE_TITLE         = "original_title";
-          //final String MOVIE_RELEASE_DATE  = "release_date";
-          //final String MOVIE_VOTE_AVERAGE  = "vote_average";
-          //final String MOVIE_PLOT_SYNOPSIS = "overview";
+            final String MOVIE_RESULTS_REF = "results";
 
             URL url = NetworkUtils.buildDefaultMovieUrl();
             try{
-                /*InputStream is = new URL(URL_STRING).openStream();
-                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-                StringBuilder sb = new StringBuilder();
-                int cp;
-                while((cp = rd.read()) != -1){
-                    sb.append((char)cp);
-                }
-                jsonString = sb.toString();
-               */
-
                 String jsonMovieResponse = NetworkUtils.getResponseFromHttpURL(url);
-                JSONObject movieJson = new JSONObject(jsonMovieResponse);
-                JSONArray moviesArray = movieJson.getJSONArray(MOVIE_RESULTS);
-                movieTitles = new String[moviesArray.length()];
+                JSONObject movieResultsJson = new JSONObject(jsonMovieResponse);
+                JSONArray moviesArray = movieResultsJson.getJSONArray(MOVIE_RESULTS_REF);
+                movieList = new Movie[moviesArray.length()];
                 for(int i = 0; i<moviesArray.length(); i++){
-                    //String title;
-                    //String release_date;
-                    //String plot_synopsis;
-                    //String image_path;
-                    //double vote_average;
-                    //int id;
-
                     JSONObject movie = moviesArray.getJSONObject(i);
-                    //title = movie.getString(MOVIE_TITLE);
-                    //release_date = movie.getString(MOVIE_RELEASE_DATE);
-                    //plot_synopsis = movie.getString(MOVIE_PLOT_SYNOPSIS);
-                    //vote_average = movie.getDouble(MOVIE_VOTE_AVERAGE);
-                    //image_path = movie.getString(MOVIE_IMAGE);
-                    //id = movie.getInt(MOVIE_ID);
+
                     movies.add(new Movie(movie));
 
-                    /*parsedMovieIds[i] = "Title: " + title + "\n" +
-                               "Release Date: " + release_date + "\n" +
-                               "Vote Average: " + vote_average + "\n" +
-                               "Plot Synopsis: " + plot_synopsis;*/
-                    movieTitles[i] = movies.get(i).getTitle();
+                    movieList[i] = movies.get(i);
                 }
             }
             catch (Exception e){
@@ -144,22 +110,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 return null;
             }
 
-            return movieTitles;
+            return movieList;
         }
 
         @Override
-        protected void onPostExecute(String[] strings) {
-            super.onPostExecute(strings);
+        protected void onPostExecute(Movie[] loadedMovies) {
+            super.onPostExecute(loadedMovies);
             mProgressBar.setVisibility(View.INVISIBLE);
-            if(strings != null){
+            if(loadedMovies != null){
                 showMovieDataView();
-                mMovieAdapter.setMoviePoster(strings);
+                mMovieAdapter.setMoviePoster(loadedMovies);
             }
             else{
                 showErrorMessage();
             }
         }
-
     }
-
 }
