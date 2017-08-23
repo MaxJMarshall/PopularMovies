@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.max.popularmovies.utilities.ApiKey;
+
 import org.json.JSONObject;
 
 public class DetailActivity extends AppCompatActivity {
@@ -15,6 +17,7 @@ public class DetailActivity extends AppCompatActivity {
     ImageView mMoviePoster;
     int identificationNumber;
     String posterPath;
+    String API_KEY = new ApiKey().getApiKey();
     //final String MOVIE_ID = "id";
     //final String MOVIE_IMAGE = "poster_path";
     final String MOVIE_TITLE = "original_title";
@@ -43,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
                 
             }
             try{
-                JSONObject movieJson = new JSONObject("https://api.themoviedb.org/3/movie/" + identificationNumber +"?api_key=9dee2214e44919b386ad7e2acc1ad305");
+                JSONObject movieJson = new JSONObject("https://api.themoviedb.org/3/movie/" + identificationNumber +"?api_key=" + API_KEY);
                 String title;
                 String release_date;
                 String plot_synopsis;

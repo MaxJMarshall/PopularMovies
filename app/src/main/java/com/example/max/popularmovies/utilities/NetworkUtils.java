@@ -19,8 +19,7 @@ public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String API_KEY =
-            "********************************";
-          //"********************************"
+            new ApiKey().getApiKey();
 
     private static final String DEFAULT_MOVIE_URL =
             "https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY;

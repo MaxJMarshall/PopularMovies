@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView.setAdapter(mMovieAdapter);
 
         loadMovieData();
+
     }
 
     private void loadMovieData(){
