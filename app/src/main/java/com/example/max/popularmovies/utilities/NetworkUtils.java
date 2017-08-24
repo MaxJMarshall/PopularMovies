@@ -24,7 +24,12 @@ public class NetworkUtils {
     private static final String DEFAULT_MOVIE_URL =
             "https://api.themoviedb.org/3/movie/popular?api_key=" + API_KEY;
 
-    private static final String SPECIFIC_MOVIE_URL = "https://api.themoviedb.org/3/movie/";
+    private static final String SPECIFIC_MOVIE_URL =
+            "https://api.themoviedb.org/3/movie/";
+
+    private static final String POSTER_BASE_URL =
+            "http://image.tmdb.org/t/p/w185/";
+
     public static URL buildDefaultMovieUrl(){
 
         Uri builtUri = Uri.parse(DEFAULT_MOVIE_URL);
@@ -38,7 +43,7 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URL" + builtUri);
+        Log.v(TAG, "Built URL " + builtUri);
 
         return url;
     }
@@ -57,6 +62,23 @@ public class NetworkUtils {
         }
 
         Log.v(TAG, "Built URL" + builtUri);
+
+        return url;
+    }
+
+    public static URL buildPosterUrl(String posterKey){
+        Uri builtUri = Uri.parse(POSTER_BASE_URL + posterKey);
+
+        URL url = null;
+
+        try{
+            url = new URL(builtUri.toString());
+        }
+        catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URL " + builtUri);
 
         return url;
     }

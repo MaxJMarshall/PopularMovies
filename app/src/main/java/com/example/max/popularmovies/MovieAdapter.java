@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.max.popularmovies.utilities.Movie;
-import com.squareup.picasso.Picasso;
+import com.example.max.popularmovies.utilities.PicassoCreator;
 
 /**
  * Created by Max on 7/5/17.
@@ -20,7 +20,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     private final MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler{
-        void onClick(String movieDescription);
+        void onClick(String moviePosterPath);
     }
 
     public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
@@ -59,7 +59,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         if(position<mMovies.length){
             String moviePosterPath = mMovies[position].getPosterPath();
             Context context = holder.mMovieImageView.getContext();
-            Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + moviePosterPath).into(holder.mMovieImageView);
+            new PicassoCreator(context, moviePosterPath, holder.mMovieImageView);
             //holder.mMovieImageView.setImageDrawable(Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + mMovies[position]));
         }
     }
