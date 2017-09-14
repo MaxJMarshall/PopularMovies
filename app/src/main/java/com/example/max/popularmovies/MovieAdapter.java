@@ -20,7 +20,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     private final MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler{
-        void onClick(String moviePosterPath);
+        void onClick(Movie movie);
     }
 
     public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
@@ -32,14 +32,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         public MovieAdapterViewHolder(View view){
             super(view);
-            mMovieImageView = (ImageView) view.findViewById(R.id.iv_movie_poster);
+            mMovieImageView = (ImageView) view.findViewById(R.id.iv_poster_in_list);
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v){
             int adapterPosition = getAdapterPosition();
-            String moviePosterPath = mMovies[adapterPosition].getPosterPath();
-            mClickHandler.onClick(moviePosterPath);
+            Movie movieToDetail;
+            if(adapterPosition<mMovies.length) {
+                movieToDetail = mMovies[adapterPosition];
+            }
+            else{
+                movieToDetail = mMovies[0];
+            }
+            mClickHandler.onClick(movieToDetail);
         }
     }
 
@@ -50,7 +57,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-
         return new MovieAdapterViewHolder(view);
     }
 
@@ -62,6 +68,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
             new PicassoCreator(context, moviePosterPath, holder.mMovieImageView);
             //holder.mMovieImageView.setImageDrawable(Picasso.with(context).load("http://image.tmdb.org/t/p/w185/" + mMovies[position]));
         }
+        else{
+            String moviePosterPath = mMovies[0].getPosterPath();
+            Context context = holder.mMovieImageView.getContext();
+            new PicassoCreator(context, moviePosterPath, holder.mMovieImageView);
+        }
     }
 
     @Override
@@ -70,8 +81,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         return mMovies.length;
     }
 
-    public void setMoviePoster(Movie posters[]){
-        mMovies = posters;
+    public void setMovieSet(Movie movieSet[]){
+        mMovies = movieSet;
         notifyDataSetChanged();
     }
 }

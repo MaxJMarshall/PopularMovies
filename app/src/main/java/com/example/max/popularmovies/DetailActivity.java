@@ -1,29 +1,27 @@
 package com.example.max.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.max.popularmovies.utilities.ApiKey;
-
-import org.json.JSONObject;
+import com.example.max.popularmovies.utilities.Movie;
+import com.example.max.popularmovies.utilities.PicassoCreator;
 
 public class DetailActivity extends AppCompatActivity {
 
-    String mMovieTitle;
     TextView mMovieDetails;
     ImageView mMoviePoster;
     int identificationNumber;
     String posterPath;
-    String API_KEY = new ApiKey().getApiKey();
     //final String MOVIE_ID = "id";
     //final String MOVIE_IMAGE = "poster_path";
-    final String MOVIE_TITLE = "original_title";
-    final String MOVIE_RELEASE_DATE = "release_date";
-    final String MOVIE_VOTE_AVERAGE = "vote_average";
-    final String MOVIE_PLOT_SYNOPSIS = "overview";
+    //final String MOVIE_TITLE = "original_title";
+    //final String MOVIE_RELEASE_DATE = "release_date";
+    //final String MOVIE_VOTE_AVERAGE = "vote_average";
+    //final String MOVIE_PLOT_SYNOPSIS = "overview";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,39 +29,34 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         mMovieDetails = (TextView) findViewById(R.id.tv_movie_data);
-        mMoviePoster = (ImageView) findViewById(R.id.iv_movie_poster);
+        mMoviePoster = (ImageView) findViewById(R.id.iv_poster_in_detail);
         
         Intent intentThatStartedThis = getIntent();
         
         if(intentThatStartedThis != null){
-            if(intentThatStartedThis.hasExtra(Intent.EXTRA_TEXT)){
-                String idAndPosterPath = intentThatStartedThis.getStringExtra(Intent.EXTRA_TEXT);
-                mMovieTitle = intentThatStartedThis.getStringExtra(Intent.EXTRA_TEXT);
-                mMovieDetails.setText(mMovieTitle);
-                identificationNumber = Integer.parseInt(idAndPosterPath.substring(0,idAndPosterPath.indexOf(" *")));
-                posterPath = idAndPosterPath.substring(idAndPosterPath.indexOf("* "));
-                
-                
-            }
-            try{
-                JSONObject movieJson = new JSONObject("https://api.themoviedb.org/3/movie/" + identificationNumber +"?api_key=" + API_KEY);
+            if(intentThatStartedThis.hasExtra("movie")){
+                Movie sentMovie = (Movie) intentThatStartedThis.getSerializableExtra("movie");
+                identificationNumber = sentMovie.getId();
+                posterPath = sentMovie.getPosterPath();
                 String title;
                 String release_date;
                 String plot_synopsis;
-                double vote_average;
+                String poster_path;
+                double popularity;
                 
-                title = movieJson.getString(MOVIE_TITLE);
-                release_date = movieJson.getString(MOVIE_RELEASE_DATE);
-                plot_synopsis = movieJson.getString(MOVIE_PLOT_SYNOPSIS);
-                vote_average = movieJson.getDouble(MOVIE_VOTE_AVERAGE);
-                
+                title = sentMovie.getTitle();
+                release_date = sentMovie.getReleaseDate();
+                plot_synopsis = sentMovie.getOverview();
+                poster_path = sentMovie.getPosterPath();
+                popularity = sentMovie.getPopularity();
+
+                Context context = this;
+                new PicassoCreator(context, poster_path, mMoviePoster);
+
                 mMovieDetails.setText("Title: " + title + "/n" +
                    "Release Date: " + release_date + "/n" +
-                   "Vote Average: " + vote_average + "n/" +
+                   "Vote Average: " + popularity + "n/" +
                    "Plot Synopsis: " + plot_synopsis);
-            }
-            catch (Exception e){
-                e.printStackTrace();
             }
         }
     }

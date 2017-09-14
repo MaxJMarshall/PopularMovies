@@ -43,7 +43,7 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URL " + builtUri);
+        Log.v(TAG, "Built default URL " + builtUri);
 
         return url;
     }
@@ -61,7 +61,7 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URL" + builtUri);
+        Log.v(TAG, "Built specific URL" + builtUri);
 
         return url;
     }
@@ -78,7 +78,7 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URL " + builtUri);
+        Log.v(TAG, "Built poster URL " + builtUri);
 
         return url;
     }

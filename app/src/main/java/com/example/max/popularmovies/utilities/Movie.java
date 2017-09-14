@@ -2,13 +2,14 @@ package com.example.max.popularmovies.utilities;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.net.URL;
 
 /**
  * Created by Max on 8/3/17.
  */
 
-public class Movie {
+public class Movie implements Serializable{
     private static final String  MOVIE_TITLE_REF = "original_title";
     private static final String  MOVIE_ID_REF = "id";
     private static final String  MOVIE_POPULARITY_REF = "popularity";
@@ -67,7 +68,7 @@ public class Movie {
             title = jsonObject.getString(MOVIE_TITLE_REF);
             id = jsonObject.getInt(MOVIE_ID_REF);
             popularity = jsonObject.getDouble(MOVIE_POPULARITY_REF);
-            posterPath = jsonObject.getString(MOVIE_POSTER_PATH_REF);
+            posterPath = jsonObject.getString(MOVIE_POSTER_PATH_REF).substring(1);
             overview = jsonObject.getString(MOVIE_OVERVIEW_REF);
             releaseDate = jsonObject.getString(MOVIE_RELEASE_DATE_REF);
         }

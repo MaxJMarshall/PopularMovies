@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
 
     @Override
-    public void onClick(String movieIdAndData) {
+    public void onClick(Movie movie) {
         Context context = this;
         Class destinationClass = DetailActivity.class;
         Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, movieIdAndData);
+        intentToStartDetailActivity.putExtra("movie", movie);
         startActivity(intentToStartDetailActivity);
     }
 
@@ -118,9 +118,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         protected void onPostExecute(Movie[] loadedMovies) {
             super.onPostExecute(loadedMovies);
             mProgressBar.setVisibility(View.INVISIBLE);
-            if(loadedMovies != null){
+            if(loadedMovies != null && loadedMovies.length > 0){
                 showMovieDataView();
-                mMovieAdapter.setMoviePoster(loadedMovies);
+                mMovieAdapter.setMovieSet(loadedMovies);
             }
             else{
                 showErrorMessage();
