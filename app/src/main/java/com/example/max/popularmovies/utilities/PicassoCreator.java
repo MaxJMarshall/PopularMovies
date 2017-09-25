@@ -1,7 +1,6 @@
 package com.example.max.popularmovies.utilities;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
 
@@ -24,11 +23,7 @@ public class PicassoCreator {
         contextIn = context;
         try {
             urlAsString = NetworkUtils.getResponseFromHttpURL(url);
-            if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-                Picasso.with(context).load(urlAsString).resize(displayMetrics.widthPixels/2-2, displayMetrics.heightPixels/2-2).centerCrop().into(target);
-            }else if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                Picasso.with(context).load(urlAsString).resize(displayMetrics.widthPixels/4-2, displayMetrics.heightPixels-2).centerCrop().into(target);
-            }
+            Picasso.with(context).load(urlAsString).into(target);
         }
         catch (Exception e){
             e.printStackTrace();

@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.MyGridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -127,5 +130,50 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 showErrorMessage();
             }
         }
+    }
+
+    public void sortByPopularity(Movie[] unsortedMovies){
+        Movie[] sortedMovies = new Movie[unsortedMovies.length];
+        for(int k = 0; k<unsortedMovies.length; k++){
+            Movie tempMovie = unsortedMovies[0];
+            for(int i = 1; i<unsortedMovies.length; i++){
+                if(tempMovie.getPopularity() > unsortedMovies[i].getPopularity()){
+                    tempMovie = unsortedMovies[i];
+                }
+                sortedMovies[k] = tempMovie;
+            }
+        }
+        mMovieAdapter.setMovieSet(sortedMovies);
+    }
+
+    public void sortByTitle(Movie[] unsortedMovies){
+        Movie[] sortedMovies = new Movie[unsortedMovies.length];
+        for(int k = 0; k<unsortedMovies.length; k++){
+            Movie tempMovie = unsortedMovies[0];
+            for(int i = 1; i<unsortedMovies.length; i++){
+                if(tempMovie.getTitle().compareTo(unsortedMovies[i].getTitle()) > 0){
+                    tempMovie = unsortedMovies[i];
+                }
+                sortedMovies[k] = tempMovie;
+            }
+        }
+        mMovieAdapter.setMovieSet(sortedMovies);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sort, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemRefNum = item.getItemId();
+
+        if(itemRefNum == R.id.sort_by_popularity){
+
+        }
+        return true;
     }
 }

@@ -69,7 +69,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
         Log.v("Made it to", "On Bind View Holder");
         if(mMovies == null){
-            mMovies = new Movie[19673];
+            mMovies = new Movie[20];
             mMovies[0] = new Movie();
             String moviePosterPath = mMovies[0].getPosterPath();
             Context context = holder.mMovieImageView.getContext();
@@ -93,12 +93,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public int getItemCount() {
-        Log.v("Made it to", "Item Count");
         if(mMovies == null){
-            mMovies = new Movie[19673];
+            Log.v("mMovies length", "null");
+            mMovies = new Movie[1];
             mMovies[0] = new Movie();
-            Log.v("Movie poster path", mMovies[0].getPosterPath());
+            return 0;
         }
+        Log.v("mMovies length", "" + mMovies.length);
         return mMovies.length;
     }
 
