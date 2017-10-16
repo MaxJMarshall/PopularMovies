@@ -4,6 +4,8 @@
     <string name="error_message_text">Oops. Something went wrong.</string>
     <string name="popularity_sorting_label">Sort by popularity</string>
     <string name="title_sorting_label">Sort by title</string>
+    <string name="release_date_sorting_label">Sort by release date</string>
+    <string name="_sorting_label">Sort by release date</string>
 
 
 </resources>

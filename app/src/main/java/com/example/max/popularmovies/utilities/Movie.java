@@ -51,7 +51,7 @@ public class Movie implements Serializable{
 
     }
 
-    public Movie(){
+    /*public Movie(){
         title = "Fight Club";
         id = 550;
         popularity = 10.173646;
@@ -61,7 +61,7 @@ public class Movie implements Serializable{
                 "underground \"fight clubs\" forming in every town, until an eccentric gets in the way and\n" +
                 "ignites an out-of-control spiral toward oblivion.";
         releaseDate = "1999-10-15";
-    }
+    }*/
 
     private void setData(JSONObject jsonObject){
         try {

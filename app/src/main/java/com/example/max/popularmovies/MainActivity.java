@@ -32,7 +32,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private MovieAdapter mMovieAdapter;
 
-    ArrayList<Movie> movies = new ArrayList<>();
+    //ArrayList<Movie> moviesAsArrayList;
+    Movie[] moviesAsArray;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
-        //loadMovieData();
+        loadMovieData();
 
     }
 
@@ -82,6 +84,22 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessage.setVisibility(View.VISIBLE);
     }
 
+    public ArrayList<Movie> convertToArrayList(Movie[] moviesToTransferToArrayList){
+        ArrayList<Movie> moviesConvertedToArrayList = new ArrayList<Movie>();
+        for(int i = 0; i<moviesToTransferToArrayList.length; i++){
+            moviesConvertedToArrayList.add(moviesToTransferToArrayList[i]);
+        }
+        return moviesConvertedToArrayList;
+    }
+
+    public Movie[] convertToArray(ArrayList<Movie> moviesToTransferToArray){
+        Movie[] moviesConvertedToArray = new Movie[moviesToTransferToArray.size()];
+        for(int i = 0; i<moviesToTransferToArray.size(); i++){
+            moviesConvertedToArray[i] = moviesToTransferToArray.get(i);
+        }
+        return moviesConvertedToArray;
+    }
+
     public class FetchMovieTask extends AsyncTask<String, Void, Movie[]>{
         @Override
         protected void onPreExecute() {
@@ -104,9 +122,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 for(int i = 0; i<moviesArray.length(); i++){
                     JSONObject movie = moviesArray.getJSONObject(i);
 
-                    movies.add(new Movie(movie));
+                    movieList[i] = new Movie(movie);
 
-                    movieList[i] = movies.get(i);
                 }
             }
             catch (Exception e){
@@ -172,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         int itemRefNum = item.getItemId();
 
         if(itemRefNum == R.id.sort_by_popularity){
-
+            sortByPopularity(moviesAsArray);
         }
         return true;
     }

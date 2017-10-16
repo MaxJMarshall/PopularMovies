@@ -17,7 +17,8 @@ import com.example.max.popularmovies.utilities.PicassoCreator;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder>{
 
-    private Movie[] mMovies;
+    //private ArrayList<Movie> mMovies;
+    private Movie[] mMoviesAsArray;
     private final MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler{
@@ -43,13 +44,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
             Log.v("Made it to", "On Click");
             int adapterPosition = getAdapterPosition();
             Movie movieToDetail;
-            if(adapterPosition<mMovies.length) {
-                movieToDetail = mMovies[adapterPosition];
+            if(adapterPosition<mMoviesAsArray.length) {
+                movieToDetail = mMoviesAsArray[adapterPosition];
+                mClickHandler.onClick(movieToDetail);
             }
-            else{
-                movieToDetail = mMovies[0];
-            }
-            mClickHandler.onClick(movieToDetail);
         }
     }
 
@@ -68,16 +66,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
         Log.v("Made it to", "On Bind View Holder");
-        if(mMovies == null){
-            mMovies = new Movie[20];
-            mMovies[0] = new Movie();
-            String moviePosterPath = mMovies[0].getPosterPath();
-            Context context = holder.mMovieImageView.getContext();
-            new PicassoCreator(context, moviePosterPath, holder.mMovieImageView);
+        if(mMoviesAsArray == null){
             Log.v("No movies to bind", "ERROR on bind view holder");
         }
-        if(position<mMovies.length && mMovies[position] != null){
-            String moviePosterPath = mMovies[position].getPosterPath();
+        for(int i = 0; i<mMoviesAsArray.length; i++){
+            mMoviesAsArray[i] = mMoviesAsArray[i];
+        }
+        if(position<mMoviesAsArray.length && mMoviesAsArray[position] != null){
+            String moviePosterPath = mMoviesAsArray[position].getPosterPath();
             Context context = holder.mMovieImageView.getContext();
             new PicassoCreator(context, moviePosterPath, holder.mMovieImageView);
             Log.v("Movies were bound", "OK on lines 72-74");
@@ -93,19 +89,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public int getItemCount() {
-        if(mMovies == null){
+        if(mMoviesAsArray == null){
             Log.v("mMovies length", "null");
-            mMovies = new Movie[1];
-            mMovies[0] = new Movie();
             return 0;
         }
-        Log.v("mMovies length", "" + mMovies.length);
-        return mMovies.length;
+        Log.v("mMovies length", "" + mMoviesAsArray.length);
+        return mMoviesAsArray.length;
     }
 
-    public void setMovieSet(Movie movieSet[]){
+    public void setMovieSet(Movie[] movieSet){
         Log.v("Made it to", "Movie Set");
-        mMovies = movieSet;
+        mMoviesAsArray = movieSet;
         notifyDataSetChanged();
     }
 }
