@@ -53,9 +53,9 @@ public class DetailActivity extends AppCompatActivity {
                 Context context = this;
                 new PicassoCreator(context, poster_path, mMoviePoster);
 
-                mMovieDetails.setText("Title: " + title + "/n" +
-                   "Release Date: " + release_date + "/n" +
-                   "Vote Average: " + popularity + "n/" +
+                mMovieDetails.setText("Title: " + title + "\n" +
+                   "Release Date: " + release_date + "\n" +
+                   "Vote Average: " + popularity + "\n" +
                    "Plot Synopsis: " + plot_synopsis);
             }
         }

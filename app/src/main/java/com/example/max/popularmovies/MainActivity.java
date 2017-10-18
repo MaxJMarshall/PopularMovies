@@ -22,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler{
 
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessage.setVisibility(View.VISIBLE);
     }
 
-    public ArrayList<Movie> convertToArrayList(Movie[] moviesToTransferToArrayList){
+    /*public ArrayList<Movie> convertToArrayList(Movie[] moviesToTransferToArrayList){
         ArrayList<Movie> moviesConvertedToArrayList = new ArrayList<Movie>();
         for(int i = 0; i<moviesToTransferToArrayList.length; i++){
             moviesConvertedToArrayList.add(moviesToTransferToArrayList[i]);
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             moviesConvertedToArray[i] = moviesToTransferToArray.get(i);
         }
         return moviesConvertedToArray;
-    }
+    }*/
 
     public class FetchMovieTask extends AsyncTask<String, Void, Movie[]>{
         @Override
@@ -150,31 +149,35 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     }
 
     public void sortByPopularity(Movie[] unsortedMovies){
-        Movie[] sortedMovies = new Movie[unsortedMovies.length];
-        for(int k = 0; k<unsortedMovies.length; k++){
-            Movie tempMovie = unsortedMovies[0];
-            for(int i = 1; i<unsortedMovies.length; i++){
-                if(tempMovie.getPopularity() > unsortedMovies[i].getPopularity()){
-                    tempMovie = unsortedMovies[i];
+        if(unsortedMovies != null){
+            Movie[] sortedMovies = new Movie[unsortedMovies.length];
+            for(int k = 0; k<unsortedMovies.length; k++){
+                Movie tempMovie = unsortedMovies[0];
+                for(int i = 1; i<unsortedMovies.length; i++){
+                 if(tempMovie.getPopularity() > unsortedMovies[i].getPopularity()){
+                        tempMovie = unsortedMovies[i];
+                    }
+                    sortedMovies[k] = tempMovie;
                 }
-                sortedMovies[k] = tempMovie;
             }
+            mMovieAdapter.setMovieSet(sortedMovies);
         }
-        mMovieAdapter.setMovieSet(sortedMovies);
     }
 
     public void sortByTitle(Movie[] unsortedMovies){
-        Movie[] sortedMovies = new Movie[unsortedMovies.length];
-        for(int k = 0; k<unsortedMovies.length; k++){
-            Movie tempMovie = unsortedMovies[0];
-            for(int i = 1; i<unsortedMovies.length; i++){
-                if(tempMovie.getTitle().compareTo(unsortedMovies[i].getTitle()) > 0){
-                    tempMovie = unsortedMovies[i];
+        if(unsortedMovies != null) {
+            Movie[] sortedMovies = new Movie[unsortedMovies.length];
+            for (int k = 0; k < unsortedMovies.length; k++) {
+                Movie tempMovie = unsortedMovies[0];
+                for (int i = 1; i < unsortedMovies.length; i++) {
+                    if (tempMovie.getTitle().compareTo(unsortedMovies[i].getTitle()) > 0) {
+                        tempMovie = unsortedMovies[i];
+                    }
+                    sortedMovies[k] = tempMovie;
                 }
-                sortedMovies[k] = tempMovie;
             }
+            mMovieAdapter.setMovieSet(sortedMovies);
         }
-        mMovieAdapter.setMovieSet(sortedMovies);
     }
 
     @Override
@@ -190,6 +193,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         if(itemRefNum == R.id.sort_by_popularity){
             sortByPopularity(moviesAsArray);
+        }
+        if(itemRefNum == R.id.sort_by_title){
+            sortByTitle(moviesAsArray);
         }
         return true;
     }
